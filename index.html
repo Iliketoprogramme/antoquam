@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antoquam</title>
+ 
+<!-- Open Graph -->
+<meta property="og:title" content="Antoquam" />
+<meta property="og:description" content="Recording the voices history forgot to write down. A student-led oral history project documenting marginalized voices in Korean history." />
+<meta property="og:url" content="https://iliketoprogramme.github.io/antoquam/" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://iliketoprogramme.github.io/antoquam/preview.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+ 
+<!-- 카카오톡 -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Antoquam" />
+<meta name="twitter:description" content="Recording the voices history forgot to write down." />
+<meta name="twitter:image" content="https://iliketoprogramme.github.io/antoquam/preview.jpg" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1612;
+    --paper: #f5f0e8;
+    --sepia: #8b7355;
+    --accent: #c4392d;
+    --muted: #b8b0a4;
+  }
+ 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+ 
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.4;
+  }
+ 
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    border-bottom: 1px solid rgba(139,115,85,0.2);
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.2s;
+  }
+ 
+  .logo {
+    font-size: 1.3rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+ 
+  .logo span {
+    color: var(--accent);
+  }
+ 
+  nav a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: var(--sepia);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+ 
+  nav a:hover { color: var(--ink); }
+ 
+  /* Hero */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 90vh;
+    padding: 0 4rem;
+    align-items: center;
+    gap: 4rem;
+  }
+ 
+  .hero-left {
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.5s;
+  }
+ 
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+ 
+  .hero-title {
+    font-size: clamp(3.5rem, 7vw, 6.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 2rem;
+  }
+ 
+  .hero-title em {
+    font-style: italic;
+    color: var(--sepia);
+  }
+ 
+  .hero-mission {
+    font-size: 1.6rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--sepia);
+    max-width: 38ch;
+    margin-bottom: 3rem;
+    border-left: 2px solid var(--accent);
+    padding-left: 1.5rem;
+  }
+ 
+  .cta-group {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+ 
+  .btn-primary {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    text-decoration: none;
+  }
+ 
+  .btn-primary:hover { background: var(--accent); }
+ 
+  .btn-ghost {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sepia);
+    text-decoration: none;
+    border-bottom: 1px solid var(--muted);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+ 
+  .btn-ghost:hover { color: var(--ink); border-color: var(--ink); }
+ 
+  .hero-right {
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.8s;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5px;
+    border-left: 1px solid rgba(139,115,85,0.25);
+    padding-left: 4rem;
+  }
+ 
+  .archive-line {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(139,115,85,0.1);
+    display: flex;
+    justify-content: space-between;
+    transition: color 0.2s;
+    cursor: default;
+  }
+ 
+  .archive-line:hover { color: var(--ink); }
+  .archive-line .tag { color: var(--accent); }
+ 
+  /* What we do */
+  .section {
+    padding: 6rem 4rem;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.2s;
+  }
+ 
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+ 
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    border-top: 1px solid rgba(139,115,85,0.2);
+    padding-top: 3rem;
+  }
+ 
+  .pillar-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+ 
+  .pillar-title {
+    font-size: 2.1rem;
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+ 
+  .pillar-desc {
+    font-size: 1.4rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--sepia);
+  }
+ 
+  /* Support */
+  .support {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 6rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+ 
+  .support-title {
+    font-size: clamp(2.5rem, 4.5vw, 4rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+ 
+  .support-title em { font-style: italic; color: #c4392d; }
+ 
+  .support-text {
+    font-size: 1.45rem;
+    margin-bottom: 2.5rem;
+  }
+ 
+  .support-right {
+    border: 1px solid rgba(245,240,232,0.15);
+    padding: 3rem;
+  }
+ 
+  .support-right p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    color: rgba(245,240,232,0.4);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+ 
+  .support-goal {
+    font-size: 4rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+  }
+ 
+  .support-goal span {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.1rem;
+    color: rgba(245,240,232,0.4);
+    vertical-align: super;
+  }
+ 
+  .progress-bar {
+    width: 100%;
+    height: 2px;
+    background: rgba(245,240,232,0.1);
+    margin: 1.5rem 0;
+  }
+ 
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    animation: grow 2s ease forwards 2s;
+  }
+ 
+  @keyframes grow { to { width: 8%; } }
+ 
+  .support-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: rgba(245,240,232,0.4);
+    letter-spacing: 0.1em;
+  }
+ 
+  .btn-donate {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: var(--accent);
+    color: var(--paper);
+    border: none;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 2rem;
+  }
+ 
+  .btn-donate:hover { opacity: 0.85; }
+ 
+  /* Footer */
+  footer {
+    padding: 2.5rem 4rem;
+    border-top: 1px solid rgba(139,115,85,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+ 
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+ 
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+ 
+  @media (max-width: 768px) {
+    nav { padding: 1.5rem 2rem; }
+    .hero { grid-template-columns: 1fr; padding: 3rem 2rem; min-height: auto; gap: 3rem; }
+    .hero-right { border-left: none; padding-left: 0; border-top: 1px solid rgba(139,115,85,0.25); padding-top: 2rem; }
+    .pillars { grid-template-columns: 1fr; }
+    .section { padding: 4rem 2rem; }
+    .support { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 3rem; }
+    footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
+  }
+ 
+  /* Team section */
+  .team-section {
+    padding: 6rem 4rem;
+    border-top: 1px solid rgba(139,115,85,0.2);
+  }
+  .team-title {
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+  }
+  .team-title em { font-style: italic; color: var(--sepia); }
+  .team-desc {
+    font-size: 1.45rem;
+    max-width: 60ch;
+  }
+  .team-names {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 2rem;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(139,115,85,0.2);
+  }
+  .team-names span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--sepia);
+    text-transform: uppercase;
+  }
+  @media (max-width: 768px) {
+    .team-section { padding: 4rem 2rem; }
+  }
+ 
+</style>
+</head>
+<body>
+ 
+<nav>
+  <div class="logo">Ante<span>Quam</span></div>
+  <div style="display:flex; gap:2.5rem;">
+    <a href="#about">About</a>
+    <a href="#archive">Archive</a>
+    <a href="#team">Team</a>
+    <a href="#support">Support</a>
+  </div>
+</nav>
+ 
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Student-led oral history project</p>
+    <h1 class="hero-title">Recording the voices<br><em>history forgot</em><br>to write down.</h1>
+    <p class="hero-mission">We document marginalized voices in Korean history — the unnamed, the women, the erased — through oral interviews, digital archiving, and community storytelling.</p>
+    <div class="cta-group">
+      <a href="#support" class="btn-primary">Support our work</a>
+      <a href="#archive" class="btn-ghost">Read the archive →</a>
+    </div>
+  </div>
+ 
+  <div class="hero-right">
+    <p style="font-family:'DM Mono',monospace; font-size:0.75rem; letter-spacing:0.15em; color:var(--sepia); text-transform:uppercase; margin-bottom:1rem;">Recent Records</p>
+    <div class="archive-line">
+      <span>Bodo League Massacre — survivor testimony</span>
+      <span class="tag">oral</span>
+    </div>
+    <div class="archive-line">
+      <span>Independence movement — unnamed wives</span>
+      <span class="tag">research</span>
+    </div>
+    <div class="archive-line">
+      <span>Women's labor, 1960s factory floors</span>
+      <span class="tag">coming</span>
+    </div>
+    <div class="archive-line">
+      <span>Jeju 4·3 — the families left behind</span>
+      <span class="tag">coming</span>
+    </div>
+    <div class="archive-line">
+      <span>Comfort women — beyond the headline</span>
+      <span class="tag">coming</span>
+    </div>
+    <div style="margin-top:2rem; font-family:'DM Mono',monospace; font-size:0.75rem; color:var(--muted); letter-spacing:0.1em;">
+      NHD National — Senior Performance<br>
+      <span style="color:var(--accent);">1st Place, NHD Korea 2026</span>
+    </div>
+  </div>
+</section>
+ 
+<section class="section" id="about">
+  <p class="section-label">What we do</p>
+  <div class="pillars">
+    <div>
+      <p class="pillar-num">01 —</p>
+      <h3 class="pillar-title">Record</h3>
+      <p class="pillar-desc">We conduct oral history interviews with survivors, descendants, and witnesses — preserving voices before they are lost to time.</p>
+    </div>
+    <div>
+      <p class="pillar-num">02 —</p>
+      <h3 class="pillar-title">Amplify</h3>
+      <p class="pillar-desc">Through card news, short-form video, and digital storytelling, we bring these histories to a new generation who may never encounter them in a textbook.</p>
+    </div>
+    <div>
+      <p class="pillar-num">03 —</p>
+      <h3 class="pillar-title">Archive</h3>
+      <p class="pillar-desc">Every story we collect is preserved in an open digital archive — free, searchable, and accessible to researchers, families, and the public.</p>
+    </div>
+  </div>
+</section>
+ 
+<!-- Team Section -->
+<section class="team-section" id="team">
+  <p class="section-label">Who we are</p>
+  <h2 class="team-title">Five students.<br><em>One shared conviction.</em></h2>
+  <p class="team-desc">We met through National History Day, spent months researching the Bodo League Massacre — a story of over 100,000 civilians that Korea suppressed for decades — and placed 1st at the Korea regional competition.</p>
+  <p class="team-desc">That experience changed how we see history. Not as a fixed record, but as a collection of choices about whose voices to keep. Antoquam is our answer to that.</p>
+  <div class="team-names">
+    <span>Yejun Heo</span><span>Yunsau Hong</span><span>Eunseo Hwang</span><span>Hiseo Shin</span><span>Jian Lee</span>
+  </div>
+</section>
+ 
+<section class="support" id="support">
+  <div>
+    <h2 class="support-title">Help us go to<br><em>Washington.</em></h2>
+    <p class="support-text">Our team won 1st place at the Republic of Korea regional NHD competition with our project on the Bodo League Massacre. We're heading to the National History Day competition in Washington D.C. this June — and we need your support to get there.</p>
+    <p class="support-text" style="margin-bottom:0;">Every dollar also funds our ongoing archiving work: recording oral histories that would otherwise disappear.</p>
+    <a href="#" class="btn-donate">Donate now</a>
+  </div>
+  <div class="support-right">
+    <p>Fundraising goal</p>
+    <div class="support-goal"><span>$</span>3,000</div>
+    <div class="progress-bar"><div class="progress-fill"></div></div>
+    <div class="support-meta">
+      <span>$240 raised</span>
+      <span>8% of goal</span>
+    </div>
+    <div style="margin-top:2.5rem; border-top: 1px solid rgba(245,240,232,0.1); padding-top:2rem;">
+      <p>Funds will cover</p>
+      <div style="color:rgba(245,240,232,0.6); font-family:'DM Mono',monospace; font-size:0.75rem; line-height:2.2; letter-spacing:0.05em;">
+        — Travel to Washington D.C.<br>
+        — Accommodation & meals<br>
+        — Archive equipment & hosting<br>
+        — Future oral history projects
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<footer>
+  <p>© 2026 Antoquam — Student Nonprofit Organization</p>
+  <p>Instagram: @Antoquam &nbsp;·&nbsp; Contact: <a href="/cdn-cgi/l/email-protection" class="__cf_
